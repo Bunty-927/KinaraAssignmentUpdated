@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="app.css" />
+    <title>Student's Web</title>
+  </head>
+  <body>
+    <h1>Student's Web Home Page</h1>
+    <button onClick="loadAllStudents();">Load Student Data</button>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Total Marks</th>
+          <th>Mobile</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="students"></tbody>
+    </table>
+
+    <script>
+      const url = "http://localhost:5000/api/student";
+
+      const loadAllStudents = async () => {
+        console.log("loading students");
+        let response = await fetch(url); // making a request to the server to get the data
+        let students = await response.json();
+
+        console.log("total students", students.length);
+        let data = "";
+        for (let student of students) {
+          data += `
+                    <tr>
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.totalMarks}</td>
+                        <td>${student.mobile}</td>
+                        <td>${student.email}</td>
+                    </tr>`;
+        }
+
+        document.getElementById("students").innerHTML = data;
+      };
+
+      loadAllStudents();
+    </script>
+  </body>
+</html>
